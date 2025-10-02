@@ -5,7 +5,9 @@ import java.util.NoSuchElementException;
 public class ArrayList<T> implements List<T> {
     public static final int DEFAULT_SIZE = 10;
     public static final double GROWTH_FACTOR = 1.5;
-    public static final String WRONG_INDEX_MESSAGE = "that index doesn't exist";
+    public static final String WRONG_INDEX_MESSAGE_P1 = "Index : ";
+    public static final String WRONG_INDEX_MESSAGE_P2 = ", Size: ";
+    public static final String NO_ELEMENT_MESSAGE = "Element not found: ";
     private int capacity;
     private T[] classList;
     private int nextFreeIndex;
@@ -30,7 +32,8 @@ public class ArrayList<T> implements List<T> {
     @Override
     public void add(T value, int index) {
         if (index > size() || index < 0) {
-            throw new ArrayListIndexOutOfBoundsException(WRONG_INDEX_MESSAGE);
+            throw new ArrayListIndexOutOfBoundsException(WRONG_INDEX_MESSAGE_P1 + index
+                    + WRONG_INDEX_MESSAGE_P2 + size());
         }
         if (nextFreeIndex == capacity) {
             grow();
@@ -101,7 +104,7 @@ public class ArrayList<T> implements List<T> {
             }
         }
         if (!foundElement) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException(NO_ELEMENT_MESSAGE + element);
         }
         return element;
     }
@@ -128,7 +131,8 @@ public class ArrayList<T> implements List<T> {
 
     private void checkIfIndexExist(int index) {
         if (index >= size() || index < 0) {
-            throw new ArrayListIndexOutOfBoundsException(WRONG_INDEX_MESSAGE);
+            throw new ArrayListIndexOutOfBoundsException(WRONG_INDEX_MESSAGE_P1 + index
+                    + WRONG_INDEX_MESSAGE_P2 + size());
         }
     }
 }
