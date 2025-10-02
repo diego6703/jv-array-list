@@ -4,8 +4,9 @@ import java.util.NoSuchElementException;
 
 public class ArrayList<T> implements List<T> {
     public static final int DEFAULT_SIZE = 10;
+    public static final double GROWTH_FACTOR = 1.5;
     public static final String WRONG_INDEX_MESSAGE = "that index doesn't exist";
-    private int currentSize;
+    private int capacity;
     private T[] classList;
     private int nextFreeIndex;
 
@@ -13,12 +14,12 @@ public class ArrayList<T> implements List<T> {
     public ArrayList() {
         this.classList = (T[]) new Object[DEFAULT_SIZE];
         this.nextFreeIndex = 0;
-        this.currentSize = DEFAULT_SIZE;
+        this.capacity = DEFAULT_SIZE;
     }
 
     @Override
     public void add(T value) {
-        if (nextFreeIndex == currentSize) {
+        if (nextFreeIndex == capacity) {
             grow();
         }
         classList[nextFreeIndex] = value;
@@ -31,10 +32,10 @@ public class ArrayList<T> implements List<T> {
         if (index > size() || index < 0) {
             throw new ArrayListIndexOutOfBoundsException(WRONG_INDEX_MESSAGE);
         }
-        if (nextFreeIndex == currentSize) {
+        if (nextFreeIndex == capacity) {
             grow();
         }
-        T[] newArr = (T[]) new Object[currentSize];
+        T[] newArr = (T[]) new Object[capacity];
         if (index > 0) {
             System.arraycopy(classList, 0, newArr, 0, index);
         }
@@ -70,7 +71,7 @@ public class ArrayList<T> implements List<T> {
     @Override
     public T remove(int index) {
         checkIfIndexExist(index);
-        T[] newArr = (T[]) new Object[currentSize];
+        T[] newArr = (T[]) new Object[capacity];
         if (index > 0) {
             System.arraycopy(classList, 0, newArr, 0, index);
         }
@@ -87,7 +88,7 @@ public class ArrayList<T> implements List<T> {
     @Override
     public T remove(T element) {
         boolean foundElement = false;
-        for (int i = 0; i < currentSize; i++) {
+        for (int i = 0; i < size(); i++) {
             if (element == null && classList[i] == null) {
                 remove(i);
                 foundElement = true;
@@ -117,11 +118,11 @@ public class ArrayList<T> implements List<T> {
 
     @SuppressWarnings("unchecked")
     private void grow() {
-        int oldSize = currentSize;
-        int newSize = (int) (oldSize * 1.5);
+        int oldSize = capacity;
+        int newSize = (int) (oldSize * GROWTH_FACTOR);
         T[] newArr = (T[]) new Object[newSize];
         System.arraycopy(classList, 0, newArr, 0, oldSize);
-        currentSize = newSize;
+        capacity = newSize;
         classList = newArr;
     }
 
